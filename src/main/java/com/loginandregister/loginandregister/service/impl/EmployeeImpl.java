@@ -6,10 +6,12 @@ import com.loginandregister.loginandregister.entity.Employee;
 import com.loginandregister.loginandregister.repo.EmployeeRepo;
 import com.loginandregister.loginandregister.response.LoginResponse;
 import com.loginandregister.loginandregister.service.EmployeeService;
+import com.loginandregister.loginandregister.utill.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -55,5 +57,29 @@ public class EmployeeImpl implements EmployeeService {
             return new LoginResponse("Email not exits", false);
         }
     }
+
+    @Override
+    public List<Employee> findAll() {
+        return employeeRepo.findAll();
+    }
+    @Override
+    public String deleteEmployee(int empID){
+        if (employeeRepo.existsById(empID)){
+            employeeRepo.deleteById(empID);
+            return VarList.RSP_SUCCESS;
+        }else {
+            return VarList.RSP_NO_DATA_FOUND;
+        }
+    }
+    @Override
+    public Employee searchEmployee(int empID){
+        if (employeeRepo.existsById(empID)){
+            Employee employee = employeeRepo.findById(empID).orElse(null);
+            return employee;
+        }else {
+            return null;
+        }
+    }
+
 
 }
